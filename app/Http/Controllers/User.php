@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Repositories\BaseRepository as BaseRepository;
 use App\User as UserModel;
-use Auth;
-use Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Firebase\JWT\JWT;

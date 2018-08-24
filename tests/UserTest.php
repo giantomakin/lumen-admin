@@ -1,5 +1,6 @@
 <?php
 use Laravel\Lumen\Testing\DatabaseTransactions;
+use Faker\Factory as Faker;
 
 class UserTest extends TestCase
 {
@@ -11,10 +12,11 @@ class UserTest extends TestCase
 
     protected $faker;
 
-    public function __construct()
-    {
-      $this->faker = Faker\Factory::create();
-    }
+     public function setUp()
+     {
+         parent::setUp();
+         $this->faker = Faker::create();
+     }
 
     public function testCreate()
     {

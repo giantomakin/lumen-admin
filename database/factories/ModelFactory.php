@@ -17,3 +17,11 @@ $factory->define(App\User::class, function ($faker) {
         'password' => $faker->password
     ];
 });
+
+$factory->define(App\Models\Job::class, function ($faker) {
+    return [
+      'job_title' => $faker->title,
+      'job_description' => $faker->paragraph,
+      'location' => $faker->state
+    ];
+});
