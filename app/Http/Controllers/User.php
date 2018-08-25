@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repositories\BaseRepository as BaseRepository;
 use App\User as UserModel;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
@@ -50,8 +51,10 @@ class User extends Controller
             ], 400);
         }
         if (Hash::check($password, $user->password)) {
+            $api_token = $this->jwt($user);
+            UserModel::where('email', $email)->update(['api_token' => $api_token]);
             return response()->json([
-                'token' => $this->jwt($user),
+                'api_token' => $this->jwt($user),
                 'message' => 'authenticated'
             ], 200);
         }
@@ -125,6 +128,19 @@ class User extends Controller
         return response()->json([
             'message' => "deleted user with id: {$id}"
         ], 200);
+      }
+      catch (\Exception $e) {
+          return response()->json([
+              'error' => $e->getMessage()
+          ], 400);
+      }
+    }
+
+    public function checkAuthUser()
+    {
+      try {
+        $user = Auth::user();
+        return response()->json($user, 200);
       }
       catch (\Exception $e) {
           return response()->json([

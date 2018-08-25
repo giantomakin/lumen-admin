@@ -3,8 +3,6 @@ namespace App\Http\Controllers;
 
 use App\Repositories\BaseRepository as BaseRepository;
 use App\Models\Contact as ContactModel;
-use Auth;
-use Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
