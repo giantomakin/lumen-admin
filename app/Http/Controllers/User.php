@@ -14,21 +14,41 @@ class User extends Controller
 { 
     protected $baseRepo;
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct(UserModel $userModel)
     {   
         $this->baseRepo = new BaseRepository($userModel);
     }
-     /**
-      * Create a new token.
-      * 
-      * @param  \App\User   $user
-     * @return string
-     */
+
+    public function create(Request $request)
+    {
+        $data = [
+                  'email' => $request->email,
+                  'password' => $request->password
+                ];
+
+        return $this->baseRepo->create($data);
+    }
+    
+    public function find($id)
+    {
+      return $this->baseRepo->find($id);
+    }
+
+    public function findBy($att, $column)
+    {
+      return $this->baseRepo->where($att, $column);
+    }
+
+    public function all()
+    {
+      return $this->baseRepo->all();
+    }
+
+    public function delete($id)
+    {
+      return $this->baseRepo->delete($id);
+    }
+
     protected function jwt(UserModel $user) 
     {
        $payload = [
@@ -54,7 +74,8 @@ class User extends Controller
             $api_token = $this->jwt($user);
             UserModel::where('email', $email)->update(['api_token' => $api_token]);
             return response()->json([
-                'api_token' => $this->jwt($user),
+                'status' => 'success',
+                'data' => ['api_token' => $this->jwt($user)],
                 'message' => 'authenticated'
             ], 200);
         }
@@ -63,88 +84,15 @@ class User extends Controller
         ], 400);
     }
 
-    public function create(Request $request)
-    {
-        $data = [
-                  'email' => $request->email,
-                  'password' => $request->password
-                ];
-        try {
-          $this->baseRepo->create($data);
-          return response()->json([
-              'message' => 'created'
-          ], 200);
-        }
-        catch (\Exception $e) {
-            return response()->json([
-                'error' => $e->getMessage()
-            ], 400);
-        }
-    }
-
-    public function find($id)
-    {
-      try {
-        $user = $this->baseRepo->find($id);
-        return response()->json($user, 200);
-      }
-      catch (\Exception $e) {
-          return response()->json([
-              'error' => $e->getMessage()
-          ], 400);
-      }
-    }
-
-    public function findBy($att, $column)
-    {
-      try {
-        $user = $this->baseRepo->where($att, $column);
-        return response()->json($user, 200);
-      }
-      catch (\Exception $e) {
-          return response()->json([
-              'error' => $e->getMessage()
-          ], 400);
-      }
-    }
-
-    public function all()
-    {
-      try {
-        $users = $this->baseRepo->all();
-        return response()->json($users, 200);
-      }
-      catch (\Exception $e) {
-          return response()->json([
-              'error' => $e->getMessage()
-          ], 400);
-      }
-    }
-
-    public function delete($id)
-    {
-      try {
-        $this->baseRepo->delete($id);
-        return response()->json([
-            'message' => "deleted user with id: {$id}"
-        ], 200);
-      }
-      catch (\Exception $e) {
-          return response()->json([
-              'error' => $e->getMessage()
-          ], 400);
-      }
-    }
-
     public function checkAuthUser()
     {
       try {
         $user = Auth::user();
-        return response()->json($user, 200);
+        return response()->json(['status' => 'success','data' => $user], 200);
       }
       catch (\Exception $e) {
           return response()->json([
-              'error' => $e->getMessage()
+              'error' => ['code' => 400, 'message' => $e->getMessage()]
           ], 400);
       }
     }
