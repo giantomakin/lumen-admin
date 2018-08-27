@@ -16,73 +16,33 @@ class BaseRepository implements BaseInterface
 
     public function create(array $data)
     {
-      try {
-        $this->model->create($data);
-        return response()->json([
-            'status' => 'success',
-            'message' => 'created'
-        ], 200);
-      }
-      catch (\Exception $e) {
-          return response()->json([
-              'error' => ['code' => 400, 'message' => $e->getMessage()]
-          ], 400);
-      }
+        return $this->model->create($data);
     }
 
     public function find($id)
     {
-      try {
-        $result = $this->model->find($id);
-        return response()->json(['status' => 'success','data' => $result], 200);
-      }
-      catch (\Exception $e) {
-          return response()->json([
-              'error' => ['code' => 400, 'message' => $e->getMessage()]
-          ], 400);
-      }
+      return $this->model->find($id);
     }
 
     public function findBy($att, $column)
     {
-      try {
-        $result = $this->model->where($att, $column);
-        return response()->json(['status' => 'success','data' => $result], 200);
-      }
-      catch (\Exception $e) {
-          return response()->json([
-              'error' => ['code' => 400, 'message' => $e->getMessage()]
-          ], 400);
-      }
+      return $this->model->where($att, $column)->first();
     }
 
     public function all()
     {
-     
-      try {
-        $result = $this->model->all();
-        return response()->json(['status' => 'success','data' => $result], 200);
-      }
-      catch (\Exception $e) {
-          return response()->json([
-              'error' => ['code' => 400, 'message' => $e->getMessage()]
-          ], 400);
-      }
+      return $this->model->all();
+    }
+
+    public function update($id, $input)
+    {
+        $model = $this->model->find($id);
+        $model->fill($input);
+        $model->save();
     }
 
     public function delete($id)
     {
-      try {
-        $this->model->destroy($id);
-        return response()->json([
-            'status' => 'success',
-            'message' => "deleted"
-        ], 200);
-      }
-      catch (\Exception $e) {
-          return response()->json([
-              'error' => ['code' => 400, 'message' => $e->getMessage()]
-          ], 400);
-      }
+        return $this->model->destroy($id);
     }
 }

@@ -23,4 +23,9 @@ class MaterialCategory extends Model
          'pattern',
          'last_update'
      ];
+
+    public function materials()
+    {
+        return $this->hasMany('App\Models\Material');
+    }
 }

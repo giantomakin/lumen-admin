@@ -23,6 +23,7 @@ $app->group(['prefix' => 'api/admin'], function () use ($app) {
 $app->group(['prefix' => 'api/user','middleware' => 'auth'], function () use ($app) {
     $app->post('create', ['uses' => 'App\Http\Controllers\User@create']);
     $app->post('delete/{id}', ['uses' => 'App\Http\Controllers\User@delete']);
+    $app->put('update/{id}', ['uses' => 'App\Http\Controllers\User@update']);
     $app->get('find/{id}', ['uses' => 'App\Http\Controllers\User@find']);
     $app->get('all', ['uses' => 'App\Http\Controllers\User@all']);
     $app->get('check-auth', ['uses' => 'App\Http\Controllers\User@checkAuthUser']);
@@ -48,6 +49,23 @@ $app->group(['prefix' => 'api/post','middleware' => 'auth'], function () use ($a
     $app->get('find/{id}', ['uses' => 'App\Http\Controllers\Post@find']);
     $app->get('all', ['uses' => 'App\Http\Controllers\Post@all']);
 });
+//materials
+$app->group(['prefix' => 'api/material','middleware' => 'auth'], function () use ($app) {
+    $app->post('create', ['uses' => 'App\Http\Controllers\Material@create']);
+    $app->post('delete/{id}', ['uses' => 'App\Http\Controllers\Material@delete']);
+    $app->get('find/{id}', ['uses' => 'App\Http\Controllers\Material@find']);
+    $app->get('all', ['uses' => 'App\Http\Controllers\Material@all']);
+});
+
+//materials category
+$app->group(['prefix' => 'api/category','middleware' => 'auth'], function () use ($app) {
+    $app->post('create', ['uses' => 'App\Http\Controllers\MaterialCategory@create']);
+    $app->post('delete/{id}', ['uses' => 'App\Http\Controllers\MaterialCategory@delete']);
+    $app->get('find/{id}', ['uses' => 'App\Http\Controllers\MaterialCategory@find']);
+    $app->get('all', ['uses' => 'App\Http\Controllers\MaterialCategory@all']);
+    $app->get('materials/{id}', ['uses' => 'App\Http\Controllers\MaterialCategory@getMaterialsByCategory']);
+});
+
 
 
 
