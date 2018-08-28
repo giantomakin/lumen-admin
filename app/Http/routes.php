@@ -14,7 +14,6 @@
 $app->get('/', function () use ($app) {
     return $app->version();
 });
-
 //admin
 $app->group(['prefix' => 'api/admin'], function () use ($app) {
     $app->post('login', ['uses' => 'App\Http\Controllers\User@authenticate']);
@@ -32,7 +31,6 @@ $app->group(['prefix' => 'api/user','middleware' => 'auth'], function () use ($a
 $app->group(['prefix' => 'api/page'], function () use ($app) {
   $app->get('{slug}',  ['uses' => 'App\Http\Controllers\Page@staticPage']);
 });
-
 //job
 $app->group(['prefix' => 'api/job','middleware' => 'auth'], function () use ($app) {
     $app->post('create', ['uses' => 'App\Http\Controllers\Job@create']);
@@ -62,19 +60,30 @@ $app->group(['prefix' => 'api/material','middleware' => 'auth'], function () use
     $app->get('all', ['uses' => 'App\Http\Controllers\Material@all']);
 });
 //materials category
-$app->group(['prefix' => 'api/category','middleware' => 'auth'], function () use ($app) {
+$app->group(['prefix' => 'api/material/category','middleware' => 'auth'], function () use ($app) {
     $app->post('create', ['uses' => 'App\Http\Controllers\MaterialCategory@create']);
     $app->post('delete/{id}', ['uses' => 'App\Http\Controllers\MaterialCategory@delete']);
     $app->get('find/{id}', ['uses' => 'App\Http\Controllers\MaterialCategory@find']);
     $app->get('all', ['uses' => 'App\Http\Controllers\MaterialCategory@all']);
     $app->get('materials/{id}', ['uses' => 'App\Http\Controllers\MaterialCategory@getMaterialsByCategory']);
 });
+
 //favorites
 $app->group(['prefix' => 'api/favorite'], function () use ($app) {
     $app->post('/add/{type}', ['uses' => 'App\Http\Controllers\Favorite@addFavorite']);
     $app->post('/remove/{type}/{id}', ['uses' => 'App\Http\Controllers\Favorite@removeFavorite']);
     $app->get('/all/{type}', ['uses' => 'App\Http\Controllers\Favorite@getAllFavorites']);
 });
+
+//gallery
+$app->group(['prefix' => 'api/gallery'], function () use ($app) {
+    $app->post('create/{type}', ['uses' => 'App\Http\Controllers\Gallery@create']);
+    $app->post('delete/{type}/{id}', ['uses' => 'App\Http\Controllers\Gallery@delete']);
+    $app->get('find/{id}', ['uses' => 'App\Http\Controllers\Gallery@find']);
+    $app->get('all/{type}', ['uses' => 'App\Http\Controllers\Gallery@all']);
+    $app->get('all/{type}/{id}', ['uses' => 'App\Http\Controllers\Gallery@getAlbumsByGallery']);
+});
+
 
 
 

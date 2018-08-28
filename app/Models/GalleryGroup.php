@@ -18,4 +18,9 @@ class GalleryGroup extends Model
          'added_at',
          'order'
      ];
+
+    public function albums()
+    {
+        return $this->hasMany('App\Models\GalleryAlbum');
+    }
 }

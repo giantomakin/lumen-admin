@@ -3,16 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\BaseRepository as BaseRepository;
-use App\Models\GalleryAlbum as GalleryAlbumModel;
-use Illuminate\Http\Request;
+use App\Factories\GalleryFactory as GalleryFactory;
+use Illuminate\Http\Request ;
 
-class GalleryAlbum extends Controller
+class Gallery extends Controller
 {
+    protected $galleryFactory;
     protected $baseRepo;
 
-    public function __construct(GalleryAlbumModel $GalleryAlbumModel)
-    {   
-        $this->baseRepo = new BaseRepository($GalleryAlbumModel);
+    public function __construct(Request $request)
+    { 
+      $type = $request->route()[2]['type'];
+      $this->galleryFactory = GalleryFactory::create($type);
+      $this->baseRepo = new BaseRepository($this->galleryFactory);
     }
 
     public function find($id)
@@ -62,6 +65,19 @@ class GalleryAlbum extends Controller
             'status' => 'success',
             'message' => "deleted"
         ], 200);
+      }
+      catch (\Exception $e) {
+          return response()->json([
+              'error' => ['code' => 400, 'message' => $e->getMessage()]
+          ], 400);
+      }
+    }
+
+    public function getAlbumsByGallery($id)
+    {   
+      try {
+        $result = $this->baseRepo->find($id)->albums;
+        return response()->json(['status' => 'success','data' => $result], 200);
       }
       catch (\Exception $e) {
           return response()->json([

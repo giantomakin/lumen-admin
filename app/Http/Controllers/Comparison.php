@@ -23,9 +23,9 @@ class Comparison extends Controller
         return response()->json(['status' => 'success','data' => $result], 200);
       }
       catch (\Exception $e) {
-          return response()->json([
-              'error' => ['code' => 400, 'message' => $e->getMessage()]
-          ], 400);
+        return response()->json([
+            'error' => ['code' => 400, 'message' => $e->getMessage()]
+        ], 400);
       }
     }
 
@@ -36,9 +36,9 @@ class Comparison extends Controller
         return response()->json(['status' => 'success','data' => $result], 200);
       }
       catch (\Exception $e) {
-          return response()->json([
-              'error' => ['code' => 400, 'message' => $e->getMessage()]
-          ], 400);
+        return response()->json([
+            'error' => ['code' => 400, 'message' => $e->getMessage()]
+        ], 400);
       }
     }
 
@@ -49,9 +49,9 @@ class Comparison extends Controller
         return response()->json(['status' => 'success','data' => $result], 200);
       }
       catch (\Exception $e) {
-          return response()->json([
-              'error' => ['code' => 400, 'message' => $e->getMessage()]
-          ], 400);
+        return response()->json([
+            'error' => ['code' => 400, 'message' => $e->getMessage()]
+        ], 400);
       }
     }
 
@@ -65,9 +65,9 @@ class Comparison extends Controller
         ], 200);
       }
       catch (\Exception $e) {
-          return response()->json([
-              'error' => ['code' => 400, 'message' => $e->getMessage()]
-          ], 400);
+        return response()->json([
+            'error' => ['code' => 400, 'message' => $e->getMessage()]
+        ], 400);
       }
     }
 }
