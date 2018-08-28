@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Comparison extends Model
-{
+class FavoriteMaterial extends Model
+{   
+
+    protected $table = 'favorites';
     public $timestamps = false;
     protected $fillable = [
-         'category1', 'category2', 'video_link', 'article'
+         'user_id', 'material_id'
      ];
 }
