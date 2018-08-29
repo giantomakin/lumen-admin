@@ -26,7 +26,7 @@ class BaseRepository implements BaseInterface
 
   public function findBy($att, $column)
   {
-    return $this->model->where($att, $column)->first();
+    return $this->model->where($att, $column);
   }
 
   public function all()

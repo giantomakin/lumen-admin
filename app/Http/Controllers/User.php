@@ -27,29 +27,22 @@ class User extends Controller
                 ];
 
         try {
-          $this->baseRepo->create($data);
-          return response()->json([
-              'status' => 'success',
-              'message' => 'created'
-          ], 200);
+            $this->baseRepo->create($data);
+            return $this->jsonOutputSuccess('created');
         }
         catch (\Exception $e) {
-            return response()->json([
-                'error' => ['code' => 400, 'message' => $e->getMessage()]
-            ], 400);
+            return $this->jsonOutputError($e->getMessage());
         }
     }
     
     public function find($id)
     {
       try {
-        $result = $this->baseRepo->find($id);
-        return response()->json(['status' => 'success','data' => $result], 200);
+          $result = $this->baseRepo->find($id);
+          return $this->jsonOutputSuccess($result);
       }
       catch (\Exception $e) {
-          return response()->json([
-              'error' => ['code' => 400, 'message' => $e->getMessage()]
-          ], 400);
+          return $this->jsonOutputError($e->getMessage());
       }
     }
 
@@ -57,41 +50,32 @@ class User extends Controller
     {
       try {
         $result = $this->baseRepo->findBy($att, $column);
-        return response()->json(['status' => 'success','data' => $result], 200);
+        return $this->jsonOutputSuccess($result);
       }
       catch (\Exception $e) {
-          return response()->json([
-              'error' => ['code' => 400, 'message' => $e->getMessage()]
-          ], 400);
+          return $this->jsonOutputError($e->getMessage());
       }
     }
 
     public function all()
     {
       try {
-        $result = $this->baseRepo->all();
-        return response()->json(['status' => 'success','data' => $result], 200);
+          $result = $this->baseRepo->all();
+          return $this->jsonOutputSuccess($result);
       }
       catch (\Exception $e) {
-          return response()->json([
-              'error' => ['code' => 400, 'message' => $e->getMessage()]
-          ], 400);
+          return $this->jsonOutputError($e->getMessage());
       }
     }
 
     public function delete($id)
     {
       try {
-        $this->baseRepo->destroy($id);
-        return response()->json([
-            'status' => 'success',
-            'message' => "deleted"
-        ], 200);
+          $this->baseRepo->destroy($id);
+          return $this->jsonOutputSuccess('deleted');
       }
       catch (\Exception $e) {
-          return response()->json([
-              'error' => ['code' => 400, 'message' => $e->getMessage()]
-          ], 400);
+          return $this->jsonOutputError($e->getMessage());
       }
     }
 
@@ -103,15 +87,10 @@ class User extends Controller
                 ];
         try {
           $this->baseRepo->update($id, $data);
-          return response()->json([
-              'status' => 'success',
-              'message' => "updated"
-          ], 200);
+          $this->jsonOutputSuccess('updated');
         }
         catch (\Exception $e) {
-            return response()->json([
-                'error' => ['code' => 400, 'message' => $e->getMessage()]
-            ], 400);
+            return $this->jsonOutputError($e->getMessage());
         }
     }
 
@@ -130,36 +109,27 @@ class User extends Controller
     {  
         $email = $request->input('email');
         $password = $request->input('password');
-        $user =  UserModel::where('email', $email)->first();
+        $user = $this->baseRepo->findBy('email', $email)->first();
         if (!$user) {
-            return response()->json([
-                'error' => 'Email does not exist.'
-            ], 400);
+            return $this->jsonOutputError('Email does not exist.');
         }
         if (Hash::check($password, $user->password)) {
             $api_token = $this->jwt($user);
-            UserModel::where('email', $email)->update(['api_token' => $api_token]);
-            return response()->json([
-                'status' => 'success',
-                'data' => ['api_token' => $this->jwt($user)],
-                'message' => 'authenticated'
-            ], 200);
+            $this->baseRepo->findBy('email', $email)->update(['api_token' => $api_token]);
+            return $this->jsonOutputSuccess( ['api_token' => $this->jwt($user)]);
         }
-        return response()->json([
-            'error' => 'Email or password is wrong.'
-        ], 400);
+        return $this->jsonOutputError('Email or password is wrong');
     }
 
     public function checkAuthUser()
     {
       try {
-        $user = Auth::user();
-        return response()->json(['status' => 'success','data' => $user], 200);
+          $user = Auth::user();
+          return $this->jsonOutputSuccess($user);
+
       }
       catch (\Exception $e) {
-          return response()->json([
-              'error' => ['code' => 400, 'message' => $e->getMessage()]
-          ], 400);
+          return $this->jsonOutputError($e->getMessage());
       }
     }
 }

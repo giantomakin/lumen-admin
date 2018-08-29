@@ -21,15 +21,10 @@ class Favorite extends Controller
       $data = $request->all();
       try {
         $this->favoriteFactory->create($data);
-        return response()->json([
-          'status' => 'success',
-          'message' => 'added'
-        ], 200);
+        return $this->jsonOutputSuccess('created');
       }
       catch (\Exception $e) {
-        return response()->json([
-          'error' => ['code' => 400, 'message' => $e->getMessage()]
-        ], 400);
+          return $this->jsonOutputError($e->getMessage());
       }
     }
 

@@ -10,7 +10,6 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-
 $app->get('/', function () use ($app) {
     return $app->version();
 });
@@ -67,14 +66,12 @@ $app->group(['prefix' => 'api/material/category','middleware' => 'auth'], functi
     $app->get('all', ['uses' => 'App\Http\Controllers\MaterialCategory@all']);
     $app->get('materials/{id}', ['uses' => 'App\Http\Controllers\MaterialCategory@getMaterialsByCategory']);
 });
-
 //favorites
 $app->group(['prefix' => 'api/favorite'], function () use ($app) {
     $app->post('/add/{type}', ['uses' => 'App\Http\Controllers\Favorite@addFavorite']);
     $app->post('/remove/{type}/{id}', ['uses' => 'App\Http\Controllers\Favorite@removeFavorite']);
     $app->get('/all/{type}', ['uses' => 'App\Http\Controllers\Favorite@getAllFavorites']);
 });
-
 //gallery
 $app->group(['prefix' => 'api/gallery'], function () use ($app) {
     $app->post('create/{type}', ['uses' => 'App\Http\Controllers\Gallery@create']);
@@ -83,10 +80,3 @@ $app->group(['prefix' => 'api/gallery'], function () use ($app) {
     $app->get('all/{type}', ['uses' => 'App\Http\Controllers\Gallery@all']);
     $app->get('all/{type}/{id}', ['uses' => 'App\Http\Controllers\Gallery@getAlbumsByGallery']);
 });
-
-
-
-
-
-
-

@@ -19,13 +19,11 @@ class Material extends Controller
     public function find($id)
     {
       try {
-        $result = $this->baseRepo->find($id);
-        return response()->json(['status' => 'success','data' => $result], 200);
+          $result = $this->baseRepo->find($id);
+          return $this->jsonOutputSuccess($result);
       }
       catch (\Exception $e) {
-        return response()->json([
-          'error' => ['code' => 400, 'message' => $e->getMessage()]
-        ], 400);
+          return $this->jsonOutputError($e->getMessage());
       }
     }
 
@@ -33,41 +31,32 @@ class Material extends Controller
     {
       try {
         $result = $this->baseRepo->findBy($att, $column);
-        return response()->json(['status' => 'success','data' => $result], 200);
+        return $this->jsonOutputSuccess($result);
       }
       catch (\Exception $e) {
-        return response()->json([
-          'error' => ['code' => 400, 'message' => $e->getMessage()]
-        ], 400);
+          return $this->jsonOutputError($e->getMessage());
       }
     }
 
     public function all()
     {
       try {
-        $result = $this->baseRepo->all();
-        return response()->json(['status' => 'success','data' => $result], 200);
+          $result = $this->baseRepo->all();
+          return $this->jsonOutputSuccess($result);
       }
       catch (\Exception $e) {
-        return response()->json([
-          'error' => ['code' => 400, 'message' => $e->getMessage()]
-        ], 400);
+          return $this->jsonOutputError($e->getMessage());
       }
     }
 
     public function delete($id)
     {
       try {
-        $this->baseRepo->destroy($id);
-        return response()->json([
-          'status' => 'success',
-          'message' => "deleted"
-        ], 200);
+          $this->baseRepo->destroy($id);
+          return $this->jsonOutputSuccess('deleted');
       }
       catch (\Exception $e) {
-        return response()->json([
-          'error' => ['code' => 400, 'message' => $e->getMessage()]
-        ], 400);
+          return $this->jsonOutputError($e->getMessage());
       }
     }
 
